@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env, argv) => {
     return ({
         entry: {
-            PixiController: './src/PixiController.js',
+            main: './src/index.js',
         },
         output: {
             filename: '[name].js',
@@ -25,15 +25,6 @@ module.exports = (env, argv) => {
             port: 8000, host: '0.0.0.0'
         },
         devtool: argv.mode === "development" ? "source-map" : void 0,
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: 'babel-loader'
-                }
-            ]
-        },
         plugins: [
             new CopyPlugin({
                 patterns: [
