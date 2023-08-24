@@ -41,7 +41,6 @@ export class StateDiagram {
         div.style.position = "absolute";
         div.style.border = "2px solid black"
         div.style.borderRadius = "10px";
-
         this._listenEvents(div);
         return div;
     }
@@ -101,7 +100,6 @@ export class StateDiagram {
         ctx.stroke();
     }
     
-
     _listenEvents(div) {
         this.isHolding = false;
         //handle touch
@@ -111,9 +109,11 @@ export class StateDiagram {
         div.addEventListener('touchcancel', this._onTouchEnd.bind(this));
         //handle mouse
         div.addEventListener('mousedown', this._onTouchStart.bind(this));
+        div.addEventListener('mouseenter', this._onMouseEnter.bind(this));
         div.addEventListener('mousemove', this._onTouchMove.bind(this));
         div.addEventListener('mouseup', this._onTouchEnd.bind(this));
         div.addEventListener('mouseleave', this._onTouchEnd.bind(this));
+        div.addEventListener('mouseleave', this._onMouseLeave.bind(this));
         div.addEventListener('mousecancel', this._onTouchEnd.bind(this));
     }
 
@@ -124,20 +124,30 @@ export class StateDiagram {
         const { x, y } = boundingRect;
         this._offsetX = clientX - x;
         this._offsetY = clientY - y;
-        console.log(clientX,clientY);
-        console.log(x, y);
+        document.body.style.cursor = "grabbing";
+    }
+
+    _onMouseEnter() {
+        document.body.style.cursor = "grab";
+    }
+    _onMouseLeave() {
+        document.body.style.cursor = "auto";
     }
 
     _onTouchMove(evt) {
         if (!this._currentDiv) return;
+        document.body.style.cursor = "grabbing";
         const { clientX, clientY } = evt;
         let newX = clientX - this._offsetX;
         let newY = clientY - this._offsetY;
         const { width, height } = this._currentDiv.getBoundingClientRect();
         this._currentDiv.style.left = `${~~(newX + width / 2)}px`;
         this._currentDiv.style.top = `${~~(newY + height / 2)}px`;
-        this._clear();
-        this._draw();
+        if (this._timeOut) clearTimeout(this._timeOut);
+        this._timeOut = setTimeout(() => {
+            this._clear();
+            this._draw();
+        }, 100);
     }
 
     _onTouchEnd() {
