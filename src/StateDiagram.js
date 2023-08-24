@@ -1,4 +1,4 @@
-import { v2 } from "./Math";
+import { v2, randRangeInt} from "./Math";
 export class StateDiagram {
     constructor(fsm, transitions) {
         this.fsm = fsm;
@@ -22,9 +22,11 @@ export class StateDiagram {
         const states = this.fsm.allStates();
         const transitions = this.fsm.transitions();
         console.log(states, transitions);
-
-        states.forEach((state, index) => {
-            this._stateElements[state] = this._createState(state, index);
+        let count = 0;
+        states.forEach((state) => {
+            if (state === "none") return;
+            this._stateElements[state] = this._createState(state, count);
+            count++;
         });
     }
     _createState(state, index){
@@ -56,15 +58,16 @@ export class StateDiagram {
     _draw() {
         this.transitions.forEach((transition, index) => {
             const direction = ((index % 2) === 0) ? 1 : -1;
-            const {name, from, to } = transition;
+            const { name, from, to } = transition;
+            if (Array.isArray(from) || from === "*" || from === "none") return;
             let p1 = this._stateElements[from].getBoundingClientRect();
             let p4 = this._stateElements[to].getBoundingClientRect();
             if (direction > 0) {
-                p1 = v2(p1.x + p1.width / 2 + 20, p1.y);
-                p4 = v2(p4.x + p4.width / 2 + 20, p4.y);
+                p1 = v2(p1.x + p1.width - 20, p1.y);
+                p4 = v2(p4.x + p4.width - 20, p4.y);
             } else {
-                p1 = v2(p1.x - p1.width / 2 + 20, p1.y);
-                p4 = v2(p4.x - p4.width / 2 + 20, p4.y);
+                p1 = v2(p1.x - 20, p1.y);
+                p4 = v2(p4.x - 20, p4.y);
             }
             const diffX = Math.abs(p4.y - p1.y) * direction * .75;
             const p2 = v2(p1.x + diffX, p1.y);
@@ -74,24 +77,30 @@ export class StateDiagram {
     }
 
     _drawTransitionArrow(p1, p2, p3, p4) {
+        p4 = v2(p4.x, p4.y + randRangeInt(-15, 15));
         const ctx = this.context;
-
         ctx.beginPath();
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = p4.y > p1.y ? "blue" : "red";
         ctx.lineWidth = 2;
         ctx.moveTo(p1.x, p1.y);
         ctx.bezierCurveTo(p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
         ctx.stroke();
-        // ctx.lineWidth = 1;
-        // var headlen = 12; // length of head in pixels
 
-        // var angle = Math.atan2(dy, dx);
-        // ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
-        // ctx.moveTo(toX, toY);
-        // ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
-        // ctx.stroke();
+        ctx.lineWidth = 2;
+        var headlen = 12; // length of head in pixels
+        const dy = p4.y - p4.y;
+        const dx = p4.x - p3.x;
+        var angle = Math.atan2(dy, dx);
 
+        const arrowX = p4.x
+        const arrowY = p4.y;
+        ctx.moveTo(arrowX, arrowY);
+        ctx.lineTo(arrowX - headlen * Math.cos(angle - Math.PI / 6), arrowY - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(arrowX, arrowY);
+        ctx.lineTo(arrowX - headlen * Math.cos(angle + Math.PI / 6), arrowY - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.stroke();
     }
+    
 
     _listenEvents(div) {
         this.isHolding = false;
