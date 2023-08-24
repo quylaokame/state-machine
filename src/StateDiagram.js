@@ -56,10 +56,10 @@ export class StateDiagram {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.width);
     }
     _draw() {
-        this.transitions.forEach((transition, index) => {
+        for (let index in this.transitions) {
+            const { name, from, to } = this.transitions[index];
             const direction = ((index % 2) === 0) ? 1 : -1;
-            const { name, from, to } = transition;
-            if (Array.isArray(from) || from === "*" || from === "none") return;
+            if (Array.isArray(from) || from === "*" || from === "none") continue;
             let p1 = this._stateElements[from].getBoundingClientRect();
             let p4 = this._stateElements[to].getBoundingClientRect();
             if (direction > 0) {
@@ -73,7 +73,7 @@ export class StateDiagram {
             const p2 = v2(p1.x + diffX, p1.y);
             const p3 = v2(p1.x + diffX, p4.y);
             this._drawTransitionArrow(p1, p2, p3, p4);
-        })
+        }
     }
 
     _drawTransitionArrow(p1, p2, p3, p4) {
