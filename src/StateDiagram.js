@@ -1,8 +1,9 @@
 import { v2, randRangeInt} from "./Math";
 export class StateDiagram {
-    constructor(fsm, transitions) {
+    constructor(fsm, transitions, states) {
         this.fsm = fsm;
         this.transitions = transitions;
+        this.states = states;
         const canvas = this.canvas = document.createElement("canvas");
         canvas.style.border = "2px solid black";
         canvas.style.position = "absolute";
@@ -19,11 +20,8 @@ export class StateDiagram {
     }
     _init() {
         this._stateElements = {};
-        const states = this.fsm.allStates();
-        const transitions = this.fsm.transitions();
-        console.log(states, transitions);
         let count = 0;
-        states.forEach((state) => {
+        this.states.forEach((state) => {
             if (state === "none") return;
             this._stateElements[state] = this._createState(state, count);
             count++;
@@ -56,11 +54,16 @@ export class StateDiagram {
     }
     _draw() {
         for (let index in this.transitions) {
-            const { name, from, to } = this.transitions[index];
+            let { name, from, to } = this.transitions[index];
             const direction = ((index % 2) === 0) ? 1 : -1;
-            if (Array.isArray(from) || from === "*" || from === "none") continue;
+            if (Array.isArray(from)) {
+                continue;
+            } else if (from === "*" || from === "none") {
+                continue;
+            }
             let p1 = this._stateElements[from].getBoundingClientRect();
             let p4 = this._stateElements[to].getBoundingClientRect();
+
             if (direction > 0) {
                 p1 = v2(p1.x + p1.width - 20, p1.y);
                 p4 = v2(p4.x + p4.width - 20, p4.y);
@@ -69,14 +72,14 @@ export class StateDiagram {
                 p4 = v2(p4.x - 20, p4.y);
             }
             const diffX = Math.abs(p4.y - p1.y) * direction * .75;
-            const p2 = v2(p1.x + diffX, p1.y);
-            const p3 = v2(p1.x + diffX, p4.y);
-            this._drawTransitionArrow(p1, p2, p3, p4);
+            const p2 = v2(p1.x + diffX, (p1.y + p4.y) / 2);
+            const p3 = p2;
+            this._drawTransition(p1, p2, p3, p4);
         }
     }
 
-    _drawTransitionArrow(p1, p2, p3, p4) {
-        p4 = v2(p4.x, p4.y + randRangeInt(-15, 15));
+    _drawTransition(p1, p2, p3, p4) {
+        p4 = v2(p4.x + randRangeInt(-5, 5), p4.y + randRangeInt(-15, 15));
         const ctx = this.context;
         ctx.beginPath();
         ctx.strokeStyle = p4.y > p1.y ? "blue" : "red";
@@ -84,19 +87,18 @@ export class StateDiagram {
         ctx.moveTo(p1.x, p1.y);
         ctx.bezierCurveTo(p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
         ctx.stroke();
+        this._drawArrow(p3,p4);
+    }
 
-        ctx.lineWidth = 2;
-        var headlen = 12; // length of head in pixels
-        const dy = p4.y - p4.y;
-        const dx = p4.x - p3.x;
-        var angle = Math.atan2(dy, dx);
-
-        const arrowX = p4.x
-        const arrowY = p4.y;
-        ctx.moveTo(arrowX, arrowY);
-        ctx.lineTo(arrowX - headlen * Math.cos(angle - Math.PI / 6), arrowY - headlen * Math.sin(angle - Math.PI / 6));
-        ctx.moveTo(arrowX, arrowY);
-        ctx.lineTo(arrowX - headlen * Math.cos(angle + Math.PI / 6), arrowY - headlen * Math.sin(angle + Math.PI / 6));
+    _drawArrow(p1,p2){
+        const ctx = this.context;
+        ctx.lineWidth = 1;
+        const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        const headlen = 12; 
+        ctx.moveTo(p2.x, p2.y);
+        ctx.lineTo(p2.x - headlen * Math.cos(angle - Math.PI / 6), p2.y - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(p2.x, p2.y);
+        ctx.lineTo(p2.x - headlen * Math.cos(angle + Math.PI / 6), p2.y - headlen * Math.sin(angle + Math.PI / 6));
         ctx.stroke();
     }
     
