@@ -1,0 +1,32 @@
+[
+    {
+        "name": "goToBetting",
+        "from": "Start_Table",
+        "to": "Betting"
+    },
+    {
+        "name": "goToEndBetting",
+        "from": "Betting",
+        "to": "End_Betting"
+    },
+    {
+        "name": "goToShowResult",
+        "from": "End_Betting",
+        "to": "Show_Result"
+    },
+    {
+        "name": "goToFinish",
+        "from": "End_Betting",
+        "to": "Finish"
+    },
+    {
+        "name": "goToFinish",
+        "from": "Show_Result",
+        "to": "Finish"
+    },
+    {
+        "name": "goToStartGame",
+        "from": "Finish",
+        "to": "Start_Table"
+    }
+]
