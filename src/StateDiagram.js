@@ -60,7 +60,7 @@ export class StateDiagram {
             } else if (from === "*") {
                 continue;
             } else if (from === to) {
-                console.error("transition to the same state");
+                console.error("transition to the same state", from);
                 continue;
             }
             let p1 = this._stateElements[from].getBoundingClientRect();

@@ -25,16 +25,6 @@
         "to": "Show_Result"
     },
     {
-        "name": "goToShowResult",
-        "from": "Show_Result",
-        "to": "Show_Result"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "Show_Result",
-        "to": "Show_Result"
-    },
-    {
         "name": "goToFinish",
         "from": "Show_Result",
         "to": "Finish"

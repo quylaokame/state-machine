@@ -13,48 +13,28 @@ const transitions = [
         "to": "End_Betting"
     },
     {
+        "name": "goToShowResult",
+        "from": "End_Betting",
+        "to": "Show_Result"
+    },
+    {
+        "name": "goToStartGame",
+        "from": "End_Betting",
+        "to": "Start_Table"
+    },
+    {
+        "name": "goToFinish",
+        "from": "Show_Result",
+        "to": "Finish"
+    },
+    {
+        "name": "goToStartGame",
+        "from": "Finish",
+        "to": "Start_Table"
+    },
+    {
         "name": "goToStartGame",
         "from": "Betting",
-        "to": "Start_Table"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "End_Betting",
-        "to": "Show_Result"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "End_Betting",
-        "to": "Start_Table"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "Show_Result",
-        "to": "Show_Result"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "Show_Result",
-        "to": "Show_Result"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "Show_Result",
-        "to": "Show_Result"
-    },
-    {
-        "name": "goToFinish",
-        "from": "Show_Result",
-        "to": "Finish"
-    },
-    {
-        "name": "goToFinish",
-        "from": "Finish",
-        "to": "Finish"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "Finish",
         "to": "Start_Table"
     }
 ]
