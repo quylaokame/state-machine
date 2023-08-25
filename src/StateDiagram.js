@@ -79,7 +79,7 @@ export class StateDiagram {
             const p3 = v2(p1.x + diffX, p4.y);
             const divX = bezier([p1.x, p2.x, p3.x, p4.x], 0.5);
             const divY = bezier([p1.y, p2.y, p3.y, p4.y], 0.5);
-            const pos = v2(divX - direction * diffX/2, divY);
+            const pos = v2(divX, divY);
             this.transitionDivs.push(this._createTransition(name, pos));
             this._drawLine(p1, p2, p3, p4);
             this._drawArrow(p3, p4);
