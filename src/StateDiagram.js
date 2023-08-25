@@ -19,6 +19,7 @@ export class StateDiagram {
         window.addEventListener("resize", this._onResize.bind(this));
     }
     _init() {
+        this.offsetY = window.innerHeight / this.states.length * 0.9;
         this._stateElements = {};
         this.states.forEach((state, index) => {
             this._stateElements[state] = this._createState(state, index);
@@ -29,7 +30,7 @@ export class StateDiagram {
         document.body.appendChild(div);
         div.zIndex = 3;
         div.innerHTML = state;
-        div.style.top = `${100 + 150 * index}px`;
+        div.style.top = `${this.offsetY * (index + 1)}px`;
         div.style.left = `50%`;
         div.style.padding = "10px 20px";
         div.style.transform = "translateX(-50%) translateY(-50%)";

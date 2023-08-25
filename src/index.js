@@ -1,46 +1,74 @@
 import { StateDiagram } from "./StateDiagram";
 import StateMachine from "javascript-state-machine";
- 
+
 const transitions = [
     {
         "name": "goToBetting",
-        "from": "Start_Table",
-        "to": "Betting"
+        "from": "0 - Start_Table",
+        "to": "4 - Betting"
     },
     {
         "name": "goToEndBetting",
-        "from": "Betting",
-        "to": "End_Betting"
+        "from": "4 - Betting",
+        "to": "5 - End_Betting"
+    },
+    {
+        "name": "goToStartGame",
+        "from": "4 - Betting",
+        "to": "0 - Start_Table"
     },
     {
         "name": "goToShowResult",
-        "from": "End_Betting",
-        "to": "Show_Result"
+        "from": "5 - End_Betting",
+        "to": "6 - Show_Result"
     },
     {
         "name": "goToStartGame",
-        "from": "End_Betting",
-        "to": "Start_Table"
+        "from": "5 - End_Betting",
+        "to": "0 - Start_Table"
+    },
+    {
+        "name": "goToShowResult",
+        "from": "6 - Show_Result",
+        "to": "7 - Show_Result"
+    },
+    {
+        "name": "goToShowResult",
+        "from": "7 - Show_Result",
+        "to": "8 - Show_Result"
+    },
+    {
+        "name": "goToShowResult",
+        "from": "8 - Show_Result",
+        "to": "9 - Show_Result"
     },
     {
         "name": "goToFinish",
-        "from": "Show_Result",
-        "to": "Finish"
+        "from": "9 - Show_Result",
+        "to": "10 - Finish"
+    },
+    {
+        "name": "goToFinish",
+        "from": "10 - Finish",
+        "to": "11 - Finish"
     },
     {
         "name": "goToStartGame",
-        "from": "Finish",
-        "to": "Start_Table"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "Betting",
-        "to": "Start_Table"
+        "from": "11 - Finish",
+        "to": "0 - Start_Table"
     }
 ]
 
 const states = [
-    "Start_Table", "Betting", "End_Betting", "Show_Result", "Finish"
+    '0 - Start_Table',
+    '4 - Betting',
+    '5 - End_Betting',
+    '6 - Show_Result',
+    '7 - Show_Result',
+    '8 - Show_Result',
+    '9 - Show_Result',
+    '10 - Finish',
+    '11 - Finish'
 ]
 
 const fsm = new StateMachine({ transitions: transitions });
