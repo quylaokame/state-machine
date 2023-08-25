@@ -1,74 +1,42 @@
 import { StateDiagram } from "./StateDiagram";
 import StateMachine from "javascript-state-machine";
 
-const transitions = [
-    {
-        "name": "goToBetting",
-        "from": "0 - Start_Table",
-        "to": "4 - Betting"
-    },
-    {
-        "name": "goToEndBetting",
-        "from": "4 - Betting",
-        "to": "5 - End_Betting"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "4 - Betting",
-        "to": "0 - Start_Table"
-    },
-    {
-        "name": "dealCards",
-        "from": "5 - End_Betting",
-        "to": "6 - Show_Result"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "5 - End_Betting",
-        "to": "0 - Start_Table"
-    },
-    {
-        "name": "playerDraw",
-        "from": "6 - Show_Result",
-        "to": "7 - Show_Result"
-    },
-    {
-        "name": "hostPlay",
-        "from": "7 - Show_Result",
-        "to": "8 - Show_Result"
-    },
-    {
-        "name": "goToShowResult",
-        "from": "8 - Show_Result",
-        "to": "9 - Show_Result"
-    },
-    {
-        "name": "goToFinish",
-        "from": "9 - Show_Result",
-        "to": "10 - Finish"
-    },
-    {
-        "name": "goToFinish",
-        "from": "10 - Finish",
-        "to": "11 - Finish"
-    },
-    {
-        "name": "goToStartGame",
-        "from": "11 - Finish",
-        "to": "0 - Start_Table"
-    }
+const transitions =[
+    { name: "goToInit", from: "*", to: "Init" },
+    { name: "goToStartGame", from: "Init", to: "Start_Table" },
+    { name: "goToStartGame", from: "Betting", to: "Start_Table" },
+    { name: "goToStartGame", from: "End_Betting", to: "Start_Table" },
+    { name: "goToStartGame", from: "Finish", to: "Start_Table" },
+
+    { name: "goToDealCard", from: "Init", to: "Deal_Card" },
+    { name: "goToDealCard", from: "Start_Table", to: "Deal_Card" },
+    { name: "goToDealCard", from: "Finish", to: "Deal_Card" },
+
+    { name: "goToBetting", from: "Init", to: "Betting" },
+    { name: "goToBetting", from: "Deal_Card", to: "Betting" },
+    { name: "goToBetting", from: "Show_Result", to: "Betting" }, // two phase betting mode
+    { name: "goToBetting", from: "Start_Table", to: "Betting" }, // skip deal-card mode.
+
+    { name: "goToEndBetting", from: "Init", to: "End_Betting" },
+    { name: "goToEndBetting", from: "Betting", to: "End_Betting" },
+
+    { name: "goToShowResult", from: "Init", to: "Show_Result" },
+    { name: "goToShowResult", from: "End_Betting", to: "Show_Result" },
+
+    { name: "goToFinish", from: "Init", to: "Finish" },
+    { name: "goToFinish", from: "Show_Result", to: "Finish" },
+
+    { name: "goToIdle", from: "*", to: "Idle" },
 ]
 
 const states = [
-    '0 - Start_Table',
-    '4 - Betting',
-    '5 - End_Betting',
-    '6 - Show_Result',
-    '7 - Show_Result',
-    '8 - Show_Result',
-    '9 - Show_Result',
-    '10 - Finish',
-    '11 - Finish'
+    'Init',
+    'Start_Table',
+    'Deal_Card',
+    'Betting',
+    'End_Betting',
+    'Show_Result',
+    'Finish',
 ]
 
 const fsm = new StateMachine({ transitions: transitions });

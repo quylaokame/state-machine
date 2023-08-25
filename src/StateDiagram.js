@@ -1,4 +1,4 @@
-import { v2, bezier} from "./Math";
+import { v2, bezier, randRange } from "./Math";
 export class StateDiagram {
     constructor(fsm, transitions, states) {
         this.fsm = fsm;
@@ -45,17 +45,18 @@ export class StateDiagram {
 
     _onResize() {
         this.canvas.width = window.innerWidth - 40;
-        this.canvas.height = window.innerHeight -40;
-        this._clear();
-        this._draw();
+        this.canvas.height = window.innerHeight - 40;
+        if (this._timeOutResize) clearTimeout(this._timeOutResize);
+        this._timeOutResize = setTimeout(() => {
+            this._clear();
+            this._draw();
+        }, 300);
     }
     _clear() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.width);
     }
     _draw() {
-        this.transitionDivs = this.transitionDivs || [];
-        this.transitionDivs.forEach((div) => { div.remove() });
-        this.transitionDivs.length = 0;
+        this.transitionDivs = this.transitionDivs || {};
         for (let index in this.transitions) {
             let { name, from, to } = this.transitions[index];
             if (Array.isArray(from)) {
@@ -69,7 +70,7 @@ export class StateDiagram {
             let p1 = this._stateElements[from].getBoundingClientRect();
             let p4 = this._stateElements[to].getBoundingClientRect();
             const direction = (p4.y > p1.y) ? 1 : -1;
-
+            p4.y = p4.y + randRange(-10, 10);
             if (direction > 0) {
                 p1 = v2(p1.x + p1.width - 20, p1.y);
                 p4 = v2(p4.x + p4.width - 20, p4.y);
@@ -77,14 +78,22 @@ export class StateDiagram {
                 p1 = v2(p1.x - 20, p1.y);
                 p4 = v2(p4.x - 20, p4.y);
             }
-            const diffX = Math.abs(p4.y - p1.y) * direction * .5;
-            const p2 = v2(p1.x + diffX, p1.y);
-            const p3 = v2(p1.x + diffX, p4.y);
+            const diffX = Math.abs(p4.y - p1.y) * direction * 0.8;
+            let p2 = v2(p1.x + diffX, p1.y);
+            let p3 = v2(p1.x + diffX, p4.y);
             const divX = bezier([p1.x, p2.x, p3.x, p4.x], 0.5);
             const divY = bezier([p1.y, p2.y, p3.y, p4.y], 0.5);
             const pos = v2(divX, divY);
             const color = p4.y > p1.y ? "gray" : "red";
-            this.transitionDivs.push(this._createTransition(name, pos, color));
+            let transitionId = `${name}-${from}-${to}`;
+            let transitionDiv = this.transitionDivs[transitionId];
+            if (!transitionDiv) {
+                transitionDiv = this._createTransition(name, pos, color);
+                this.transitionDivs[transitionId] = transitionDiv;
+            } else {
+                transitionDiv.style.left = `${pos.x}px`;
+                transitionDiv.style.top = `${pos.y}px`;
+            }
             this._drawLine(p1, p2, p3, p4);
             this._drawArrow(p3, p4);
         }
@@ -97,8 +106,9 @@ export class StateDiagram {
         div.style.left = `${position.x}px`;
         div.style.top = `${position.y}px`;
         div.style.position = "absolute";
-        div.style.transform = "translateX(-25%) translateY(50%)";
+        div.style.transform = "translateX(-25%) translateY(25%)";
         div.style.fontWeight = "bold";
+        div.style.padding = "10px 20px";
         div.style.color = "gray";
         return div;
     }
