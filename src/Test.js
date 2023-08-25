@@ -15,22 +15,22 @@ const states5994 =  {
         transition: 'goToEndBetting'
     },
     6: {
-        fsmState: 'Show_Result', 
+        fsmState: 'Show_Result', // deal-cards
         nextState: 7,
-        transition: 'dealCards'
+        transition: 'goToShowResult'
     },
     7: {
-        fsmState: 'Show_Result',
+        fsmState: 'Show_Result', // player-draw
         nextState: 8,
-        transition: 'playerDraw'
+        transition: 'goToShowResult'
     },
     8: {
-        fsmState: 'Show_Result', 
+        fsmState: 'Show_Result', // host-play
         nextState: 9,
-        transition: 'hostPlay'
+        transition: 'goToShowResult'
     },
     9: {
-        fsmState: 'Show_Result', 
+        fsmState: 'Show_Result', // SHOW_RESULT
         nextState: 10,
         transition: 'goToShowResult'
     },
@@ -40,9 +40,9 @@ const states5994 =  {
         transition: 'goToFinish'
     },
     11: {
-        fsmState: 'Finish', 
+        fsmState: 'Finish', // end game
         nextState: 0,
-        transition: 'endGame'
+        transition: 'goToFinish'
     }
 };
 

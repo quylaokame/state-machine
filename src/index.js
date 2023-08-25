@@ -48,7 +48,7 @@ const transitions = [
         "to": "10 - Finish"
     },
     {
-        "name": "endGame",
+        "name": "goToFinish",
         "from": "10 - Finish",
         "to": "11 - Finish"
     },
