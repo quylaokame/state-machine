@@ -3,32 +3,27 @@ import StateMachine from "javascript-state-machine";
  
 const transitions = [
     {
-        name: 'goToStartGame',
+        name: 'goToBetting',
         from: 'Start_Table',
         to: 'Betting'
     },
     {
-        name: 'goToBetting',
+        name: 'goToEndBetting',
         from: 'Betting',
         to: 'End_Betting'
     },
     {
-        name: 'goToEndBetting',
+        name: 'goToShowResult',
         from: 'End_Betting',
         to: 'Show_Result'
     },
     {
-        name: 'resume',
-        from: 'End_Betting',
-        to: 'Finish'
-    },
-    {
-        name: 'goToShowResult',
+        name: 'goToFinish',
         from: 'Show_Result',
         to: 'Finish'
     },
     {
-        name: 'goToFinish',
+        name: 'goToStartGame',
         from: 'Finish',
         to: 'Start_Table'
     }

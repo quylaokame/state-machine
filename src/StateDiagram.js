@@ -1,4 +1,4 @@
-import { v2, randRangeInt} from "./Math";
+import { v2, bezier} from "./Math";
 export class StateDiagram {
     constructor(fsm, transitions, states) {
         this.fsm = fsm;
@@ -16,15 +16,12 @@ export class StateDiagram {
 
         this._init();
         this._onResize();
-        // window.addEventListener("resize", this._onResize.bind(this));
+        window.addEventListener("resize", this._onResize.bind(this));
     }
     _init() {
         this._stateElements = {};
-        let count = 0;
-        this.states.forEach((state) => {
-            if (state === "none") return;
-            this._stateElements[state] = this._createState(state, count);
-            count++;
+        this.states.forEach((state, index) => {
+            this._stateElements[state] = this._createState(state, index);
         });
     }
     _createState(state, index){
@@ -58,7 +55,7 @@ export class StateDiagram {
             const direction = ((index % 2) === 0) ? 1 : -1;
             if (Array.isArray(from)) {
                 continue;
-            } else if (from === "*" || from === "none") {
+            } else if (from === "*") {
                 continue;
             }
             let p1 = this._stateElements[from].getBoundingClientRect();
@@ -71,15 +68,30 @@ export class StateDiagram {
                 p1 = v2(p1.x - 20, p1.y);
                 p4 = v2(p4.x - 20, p4.y);
             }
-            const diffX = Math.abs(p4.y - p1.y) * direction * .75;
-            const p2 = v2(p1.x + diffX, (p1.y + p4.y) / 2);
-            const p3 = p2;
-            this._drawTransition(p1, p2, p3, p4);
+            const diffX = Math.abs(p4.y - p1.y) * direction * .5;
+            const p2 = v2(p1.x + diffX, p1.y);
+            const p3 = v2(p1.x + diffX, p4.y);
+            const divX = bezier([p1.x, p2.x, p3.x, p4.x], 0.5);
+            const divY = bezier([p1.y, p2.y, p3.y, p4.y], 0.5);
+            const pos = v2(divX, divY);
+            this._createTransition(name, pos);
+            this._drawLine(p1, p2, p3, p4);
+            this._drawArrow(p3, p4);
         }
     }
 
-    _drawTransition(p1, p2, p3, p4) {
-        p4 = v2(p4.x + randRangeInt(-5, 5), p4.y + randRangeInt(-15, 15));
+    _createTransition(name, position) {
+        const div = document.createElement("div");
+        document.body.appendChild(div);
+        div.innerHTML = name;
+        div.style.top = `${position.y}px`;
+        div.style.left = `${position.x}px`;
+        div.style.position = "absolute";
+        div.style.fontWeight = "bold";
+        return div;
+    }
+
+    _drawLine(p1, p2, p3, p4){
         const ctx = this.context;
         ctx.beginPath();
         ctx.strokeStyle = p4.y > p1.y ? "blue" : "red";

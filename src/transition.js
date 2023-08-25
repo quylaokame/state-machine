@@ -20,30 +20,19 @@ const states5994 = {
 
 function convertTransitions(states) {
     const transitions = [];
-    for (let state in states) { const { fsmState, nextState, transition } = states[state]; let to = nextState; if (Array.isArray(nextState)) {     to = nextState.map(id => states[id].fsmState); } else {     to = [states[nextState].fsmState] } const data = { name: transition, "from": fsmState, to }; transitions.push(data);
+    for (let state in states) {
+        const { fsmState, nextState, transition } = states[state];
+        let to = nextState;
+        if (Array.isArray(nextState)) {
+            to = nextState.map(id => states[id].fsmState);
+        } else {
+            to = [states[nextState].fsmState]
+        }
+        const data = { name: transition, "from": fsmState, to };
+        transitions.push(data);
     }
     console.log(JSON.stringify(transitions, null, "\t"));
 }
 
 // convertTransitions(testStates);
 convertTransitions(states5994);
-
-const transitionTest = [
-    { "name": 'goToStartGame', "from": 'Start_Table', "to": ['Betting'] },
-    { "name": 'goToBetting', "from": 'Betting', "to": ['End_Betting', 'Start_Table'] },
-    { "name": 'goToEndBetting', "from": 'End_Betting', "to": ['Show_Result', 'Start_Table'] },
-    { "name": 'goToShowResult', "from": 'Show_Result', "to": ['Show_Result'] },
-    { "name": 'goToShowResult', "from": 'Show_Result', "to": ['Show_Result'] },
-    { "name": 'goToShowResult', "from": 'Show_Result', "to": ['Show_Result'] },
-    { "name": 'goToShowResult', "from": 'Show_Result', "to": ['Finish'] },
-    { "name": 'goToFinish', "from": 'Finish', "to": ['Finish'] },
-    { "name": 'goToFinish', "from": 'Finish', "to": ['Start_Table'] }
-]
-
-const transitions5994 = [
-    { "name": "goToStartGame", "from": "Start_Table", "to": ["Betting"] },
-    { "name": "goToBetting", "from": "Betting", "to": ["End_Betting"] },
-    { "name": "goToEndBetting", "from": "End_Betting", "to": ["Show_Result", "Finish"] },
-    { "name": "goToShowResult", "from": "Show_Result", "to": ["Finish"] },
-    { "name": "goToFinish", "from": "Finish", "to": ["Start_Table"] }
-]
