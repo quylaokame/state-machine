@@ -18,7 +18,7 @@ const transitions = [
         "to": "0 - Start_Table"
     },
     {
-        "name": "goToShowResult",
+        "name": "dealCards",
         "from": "5 - End_Betting",
         "to": "6 - Show_Result"
     },
@@ -28,12 +28,12 @@ const transitions = [
         "to": "0 - Start_Table"
     },
     {
-        "name": "goToShowResult",
+        "name": "playerDraw",
         "from": "6 - Show_Result",
         "to": "7 - Show_Result"
     },
     {
-        "name": "goToShowResult",
+        "name": "hostPlay",
         "from": "7 - Show_Result",
         "to": "8 - Show_Result"
     },
@@ -48,7 +48,7 @@ const transitions = [
         "to": "10 - Finish"
     },
     {
-        "name": "goToFinish",
+        "name": "endGame",
         "from": "10 - Finish",
         "to": "11 - Finish"
     },

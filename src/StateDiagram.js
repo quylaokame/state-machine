@@ -12,6 +12,8 @@ export class StateDiagram {
 
         document.body.style.overflow = "hidden";
         document.body.style.padding = "10px";
+        document.body.style.fontFamily = "Monaco";
+
         this.context = canvas.getContext("2d");
 
         this._init();
@@ -81,13 +83,14 @@ export class StateDiagram {
             const divX = bezier([p1.x, p2.x, p3.x, p4.x], 0.5);
             const divY = bezier([p1.y, p2.y, p3.y, p4.y], 0.5);
             const pos = v2(divX, divY);
-            this.transitionDivs.push(this._createTransition(name, pos));
+            const color = p4.y > p1.y ? "gray" : "red";
+            this.transitionDivs.push(this._createTransition(name, pos, color));
             this._drawLine(p1, p2, p3, p4);
             this._drawArrow(p3, p4);
         }
     }
 
-    _createTransition(name, position) {
+    _createTransition(name, position, color) {
         const div = document.createElement("div");
         document.body.appendChild(div);
         div.innerHTML = name;
@@ -96,6 +99,7 @@ export class StateDiagram {
         div.style.position = "absolute";
         div.style.transform = "translateX(-25%) translateY(50%)";
         div.style.fontWeight = "bold";
+        div.style.color = "gray";
         return div;
     }
 

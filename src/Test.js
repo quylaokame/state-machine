@@ -17,17 +17,17 @@ const states5994 =  {
     6: {
         fsmState: 'Show_Result', 
         nextState: 7,
-        transition: 'goToShowResult'
+        transition: 'dealCards'
     },
     7: {
-        fsmState: 'Show_Result', 
+        fsmState: 'Show_Result',
         nextState: 8,
-        transition: 'goToShowResult'
+        transition: 'playerDraw'
     },
     8: {
         fsmState: 'Show_Result', 
         nextState: 9,
-        transition: 'goToShowResult'
+        transition: 'hostPlay'
     },
     9: {
         fsmState: 'Show_Result', 
@@ -42,7 +42,7 @@ const states5994 =  {
     11: {
         fsmState: 'Finish', 
         nextState: 0,
-        transition: 'goToFinish'
+        transition: 'endGame'
     }
 };
 
@@ -58,9 +58,9 @@ function formatStates(states) {
             transitions.push({ name, from: id + " - " + from, to: nextId + " - " + to });
         })
     })
-    console.error(serverStates);
-    // console.error(JSON.stringify(transitions));
-    return { serverStates, transitions };
+    const result = { serverStates, transitions }
+    console.error(JSON.stringify(result));
+    return result;
 }
 
 formatStates(states5994);
