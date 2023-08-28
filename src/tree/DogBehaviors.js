@@ -43,3 +43,12 @@ const bTree = new BehaviorTree({
 setInterval(function () {
     bTree.step()
 }, 1000 / 60)
+
+export class DogBehavior {
+    constructor() {
+        this.bTree = new BehaviorTree({
+            tree: tree,
+            blackboard: dog
+        })
+    }
+}
