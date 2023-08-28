@@ -11,7 +11,7 @@ export class View {
         this.isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i) != null;
         this._onResized = this.onResize.bind(this);
         window.addEventListener("resize", this._onResized);
-        this._showTest = true;
+        this._isDebug = false;
         this._onResized();
     }
 
@@ -46,7 +46,7 @@ export class View {
             this.isRotate = false;
             rootNode.angle = 0;
         }
-        console.log("rotate", this.isRotate);
+        this._isDebug && console.log("rotate", this.isRotate);
     }
 
     _getScreenOrientation() {
@@ -73,7 +73,7 @@ export class View {
         const scaleY = screenHeight / height;
         let scale = Math.min(scaleX, scaleY);
         this._drawTest(width, height);
-        console.log({ screenWidth, screenHeight, scale });
+        this._isDebug && console.log({ screenWidth, screenHeight, scale });
         return scale;
     }
 
@@ -93,7 +93,7 @@ export class View {
         graphics.beginFill();
         graphics.drawRect(-width/2 + 5, -height/2+5, width - 20, height - 20);
         graphics.endFill();
-        console.log("graphics", width, height);
+        this._isDebug && console.log("graphics", width, height);
     }
     _initTest(){
         this._graphics = new Graphics();

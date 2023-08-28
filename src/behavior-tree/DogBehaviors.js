@@ -34,21 +34,7 @@ const tree = new Sequence({
 
 const dog = new Dog();
 
-const bTree = new BehaviorTree({
+export const dogBehaviorTree = new BehaviorTree({
     tree: tree,
     blackboard: dog
 })
-
-// The "game" loop:
-setInterval(function () {
-    bTree.step()
-}, 1000 / 60)
-
-export class DogBehavior {
-    constructor() {
-        this.bTree = new BehaviorTree({
-            tree: tree,
-            blackboard: dog
-        })
-    }
-}
