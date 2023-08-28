@@ -1,4 +1,4 @@
-import { v2, bezier, randRange } from "./Math";
+import { v2, bezier, randRange } from "../Math";
 export class StateDiagram {
     constructor(fsm, transitions, states) {
         this.fsm = fsm;
