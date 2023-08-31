@@ -1,12 +1,15 @@
 import { Application } from "pixi.js";
-import { View } from "./View";
+import EventEmitter from "events";
+import { ScreenAdapter } from "./ScreenAdapter";
 
 const defaultSettings = {
-    designResolution: { width: 1560, height: 720},
+    designResolution: { width: 1560, height: 1560 },
     orientation: "landscape"
 }
-export class Director {
+
+export class Director extends EventEmitter {
     constructor(settings = defaultSettings) {
+        super();
         settings = Object.assign(defaultSettings, settings);
         this.app = new Application({
             view: document.getElementById("pixi-canvas"),
@@ -16,6 +19,8 @@ export class Director {
             width: window.innerWidth,
             height: window.innerHeight,
         });
-        this.view = new View(settings, this.app);
+        this.screenAdapter = new ScreenAdapter(settings, this.app);
     }
 }
+
+export const director = new Director();

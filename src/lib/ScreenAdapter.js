@@ -1,6 +1,6 @@
 import { Graphics } from "pixi.js";
 
-export class View {
+export class ScreenAdapter {
     constructor(settings, app) {
         const { designResolution, orientation } = settings;
         this.designResolution = designResolution;
@@ -11,7 +11,7 @@ export class View {
         this.isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i) != null;
         this._onResized = this.onResize.bind(this);
         window.addEventListener("resize", this._onResized);
-        this._isDebug = false;
+        this._isDebug = true;
         this._onResized();
     }
 
@@ -78,21 +78,22 @@ export class View {
     }
 
     _drawTest(width, height) {
-        if (!this._showTest) return;
+        if (!this._isDebug) return;
         if (!this._graphics) {
             this._initTest();
         }
         const graphics = this._graphics;
+        const lineWidth = 2;
         graphics.clear();
-        graphics.lineStyle(5, 0xff0000, 2);
+        graphics.lineStyle(lineWidth, 0x00ff00, 1);
         graphics.beginFill();
-        graphics.drawRect(-5, -5, 20, 20);
+        graphics.drawRect(-width / 2 + lineWidth / 2, -height / 2 + lineWidth / 2, width - lineWidth, height - lineWidth);
         graphics.endFill();
 
-        graphics.lineStyle(5, 0x00ff00, 2);
+        graphics.lineStyle(lineWidth, 0xcd0000, 1);
         graphics.beginFill();
-        graphics.drawRect(-width/2 + 5, -height/2+5, width - 20, height - 20);
-        graphics.endFill();
+        graphics.drawCircle(0,0,5);
+
         this._isDebug && console.log("graphics", width, height);
     }
     _initTest(){

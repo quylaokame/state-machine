@@ -28,7 +28,8 @@ module.exports = (env, argv) => {
         plugins: [
             new CopyPlugin({
                 patterns: [
-                    { from: 'src/icons/', to: "icons/" }
+                    { from: 'src/icons/', to: "icons/" },
+                    { from: 'src/plugins/', to: "plugins/" },
                 ],
             }),
             new HtmlWebpackPlugin({
