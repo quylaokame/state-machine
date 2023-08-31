@@ -10,9 +10,11 @@ const defaultSettings = {
 export class Director extends EventEmitter {
     constructor(settings = defaultSettings) {
         super();
+        const canvas = document.getElementById("pixi-canvas");
+        canvas.style.backgroundColor = "white";
         settings = Object.assign(defaultSettings, settings);
         this.app = new Application({
-            view: document.getElementById("pixi-canvas"),
+            view: canvas,
             resolution: 1,
             autoDensity: true,
             backgroundColor: 0x000000,

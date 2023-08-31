@@ -20,7 +20,7 @@ export class ScreenAdapter {
         this._timeOutResize = setTimeout(() => {
             this._timeOutResize = null;
             this.updateView();
-        }, 50);
+        }, 100);
     }
 
     updateView(){
@@ -83,16 +83,16 @@ export class ScreenAdapter {
             this._initTest();
         }
         const graphics = this._graphics;
-        const lineWidth = 2;
+        const lineWidth = 4;
         graphics.clear();
-        graphics.lineStyle(lineWidth, 0x00ff00, 1);
+        graphics.lineStyle(lineWidth, 0x686868, 1);
         graphics.beginFill();
-        graphics.drawRect(-width / 2 + lineWidth / 2, -height / 2 + lineWidth / 2, width - lineWidth, height - lineWidth);
+        graphics.drawRect(-width / 2 + lineWidth, -height / 2 + lineWidth, width - lineWidth * 2, height - lineWidth * 2);
         graphics.endFill();
 
-        graphics.lineStyle(lineWidth, 0xcd0000, 1);
+        graphics.lineStyle(2, 0xcd0000, 1);
         graphics.beginFill();
-        graphics.drawCircle(0,0,5);
+        graphics.drawCircle(0,0,4);
 
         this._isDebug && console.log("graphics", width, height);
     }
