@@ -1,0 +1,43 @@
+{
+    "name": " EnemyBT",
+    "type": " Selector",
+    "children": [
+        {
+            "name": "beHit",
+            "type": "sequence",
+            "children": [
+                {
+                    "type": "Condition",
+                    "script": {
+
+                    }
+                },
+                {
+                    "type": "Action",
+                    "script": {
+                        "event": "ATTACK"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "die",
+            "type": "sequence",
+            "children": [
+                {}
+            ]
+        },
+        {
+            "name": "attack",
+            "type": "sequence",
+            "children": [
+                {}
+            ]
+        },
+        {
+            "name": "idle",
+            "type": "sequence",
+            "children": []
+        }
+    ]
+}

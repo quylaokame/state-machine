@@ -1,4 +1,4 @@
-import { v2, bezier, randRange } from "../Math";
+import { v2, bezier, randRange } from "../utils";
 export class StateDiagram {
     constructor(fsm, transitions, states) {
         this.fsm = fsm;
@@ -68,6 +68,9 @@ export class StateDiagram {
                 continue;
             }
             let p1 = this._stateElements[from].getBoundingClientRect();
+            if(!this._stateElements[to]){
+                debugger;
+            }
             let p4 = this._stateElements[to].getBoundingClientRect();
             const direction = (p4.y > p1.y) ? 1 : -1;
             p4.y = p4.y + randRange(-10, 10);

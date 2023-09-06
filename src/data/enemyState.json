@@ -1,0 +1,27 @@
+{
+    "stateNames": [
+        "idle",
+        "hit01",
+        "hit02",
+        "standup",
+        "stunned",
+        "die"
+    ],
+    "transitions": [
+        { "name": "goto_hit01", "from": "idle", "to": "hit01" },
+        { "name": "goto_hit02", "from": "idle", "to": "hit02" },
+        { "name": "goto_attack", "from": "idle", "to": "attack" },
+        { "name": "goto_stunned", "from": "hit01", "to": "stunned" },
+        { "name": "goto_hit02", "from": "hit01", "to": "hit02" },
+        { "name": "goto_idle", "from": "hit01", "to": "idle" },
+        { "name": "goto_standup", "from": "hit02", "to": "standup" },
+        { "name": "goto_idle", "from": "hit02", "to": "idle" },
+        { "name": "goto_idle", "from": "standup", "to": "idle" },
+        { "name": "goto_hit01", "from": "standup", "to": "hit01" },
+        { "name": "goto_hit02", "from": "standup", "to": "hit02" },
+        { "name": "goto_hit01", "from": "stunned", "to": "hit01" },
+        { "name": "goto_hit02", "from": "stunned", "to": "hit02" },
+        { "name": "goto_idle", "from": "stunned", "to": "idle" },
+        { "name": "goto_idle", "from": "die", "to": "idle" }
+    ]
+}
